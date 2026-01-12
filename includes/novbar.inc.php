@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid" .bg-dark.bg-gradient>
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -19,12 +19,12 @@
                         Auth
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/Lesson/pages/auth/login.php">Login</a></li>
+                        <li><a class="dropdown-item" href="/php-web-private/pages/login.php">Login</a></li>
 
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/Lesson/pages/auth/register.php">Register</a></li>
+                        <li><a class="dropdown-item" href="/php-web-private/pages/register.php">Register</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

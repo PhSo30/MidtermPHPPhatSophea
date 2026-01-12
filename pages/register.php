@@ -1,7 +1,7 @@
 <?php
-include_once '../../includes/header.inc.php';
-include_once '../../includes/footer.inc.php';
-include_once '../../includes/novbar.inc.php';
+include_once '../includes/header.inc.php';
+include_once '../includes/footer.inc.php';
+include_once '../includes/novbar.inc.php';
 ?>
 
 <body>
