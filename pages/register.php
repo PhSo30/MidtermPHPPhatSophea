@@ -2,9 +2,25 @@
 // include_once '../includes/header.inc.php';
 // include_once '../includes/footer.inc.php';
 // include_once '../includes/novbar.inc.php';
-
-    if (isset($_POST['username'])) {
-        echo $_POST['username'];
+$nameError = $usernameError = $passwdError = $confirmpasswordError = '';
+$name = $username = $passwd = $confirmpassword = '';
+    if (isset($_POST['username'],$_POST['password'],$_POST['confirmpassword'],$_POST['name'])) {
+        $name = $_POST['name'];
+        $username = $_POST['username'];
+        $passwd = $_POST['password'];
+        $confirmpassword = $_POST['confirmpassword'];
+        if(empty($name)){
+            $nameError = "Name is required";
+        }
+        if(empty($passwd)){
+            $passwdError = "Password is required";
+        }
+        if(empty($confirmpassword)){
+            $confirmpasswordError = "Confirm Password is required";
+        }
+        if(empty($username)){
+            $usernameError = "Username is required";
+        }
     }
 ?>
 
@@ -14,22 +30,28 @@
     <form method="post" action="./?page=register" class="col-md-8 col-lg-6 mx-auto">
         <h3>Register</h3>
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input name="username" type="email" class="form-control" id="exampleInputEmail1"
-                aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <label class="form-label">Name</label>
+            <input name="name" value="<?php echo $name;?>" type="text" class="form-control
+            <?php echo empty($nameError) ? '' : 'is-invalid'?>">
+            <div class="invalid-feedback"><?php echo $nameError;?></div>
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+            <label class="form-label">Username</label>
+            <input name="username" value="<?php echo $username;?>" type="text" class="form-control
+            <?php echo empty($usernameError) ? '' : 'is-invalid'?>">
+            <div class="invalid-feedback"><?php echo $usernameError;?></div>
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
-            <input name="confirmpassword" type="password" class="form-control" id="exampleInputPassword1">
+            <label class="form-label">Password</label>
+            <input name="password" type="password" class="form-control
+            <?php echo empty($passwdError) ? '' : 'is-invalid'?>">
+            <div class="invalid-feedback"><?php echo $passwdError;?></div>
         </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input name="confirmpassword" type="password" class="form-control
+            <?php echo empty($confirmpasswordError) ? '' : 'is-invalid'?>">
+            <div class="invalid-feedback"><?php echo $confirmpasswordError;?></div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

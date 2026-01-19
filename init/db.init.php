@@ -1,0 +1,13 @@
+<?php
+    $db_host = 'localhost'; // or '127.0.0.1
+    $db_name = 'php-lesson-private-db';
+    $db_user = 'root';
+    $db_pass = '';
+    $db_port = 3306;
+
+    $db = new mysqli($db_host, $db_user,$db_pass, $db_name, $db_port);
+    if($db->connect_error){
+        echo "$db->connect_error";
+        die();
+    }
+?>
