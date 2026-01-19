@@ -46,9 +46,7 @@ $name = $username = $passwd = $confirmpassword = '';
         </div>
         <div class="mb-3">
             <label class="form-label">Confirm Password</label>
-            <input name="confirmpassword" type="password" class="form-control
-            <?php echo empty($confirmpasswordError) ? '' : 'is-invalid'?>">
-            <div class="invalid-feedback"><?php echo $confirmpasswordError;?></div>
+            <input name="confirmpassword" type="password" class="form-control"
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
