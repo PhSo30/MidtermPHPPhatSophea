@@ -46,7 +46,7 @@ $name = $username = '';
         </div>
         <div class="mb-3">
             <label class="form-label">Confirm Password</label>
-            <input name="confirmpassword" type="password" class="form-control"
+            <input name="confirmpassword" type="password" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
