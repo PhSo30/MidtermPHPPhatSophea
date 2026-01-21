@@ -24,6 +24,6 @@ if (isset($_GET['page'])) {
 }
 include './includes/footer.inc.php';
 ?>
-<H2>
-This is index.php
-</H2>
+<h1>
+    Hello World
+</h1>
