@@ -3,7 +3,7 @@
 // include_once '../includes/footer.inc.php';
 // include_once '../includes/novbar.inc.php';
 $nameError = $usernameError = $passwdError = $confirmpasswordError = '';
-$name = $username = $passwd = $confirmpassword = '';
+$name = $username = '';
     if (isset($_POST['username'],$_POST['password'],$_POST['confirmpassword'],$_POST['name'])) {
         $name = $_POST['name'];
         $username = $_POST['username'];
