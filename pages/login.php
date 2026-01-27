@@ -16,7 +16,7 @@ if (isset($_POST['username'], $_POST['passwd'])) {
     }
     if (empty($usernameError) && empty($passwdError)) {
         if (loginUser($username, $passwd)) {
-            $name = $passwd = '';
+            $username = $passwd = '';
             echo '<div class="alert alert-success" role="alert">
     Login successful! Click to continue to <a href="./?page=home" class="alert-link">HOME</a>. Give it a click if you like.
 </div>';
