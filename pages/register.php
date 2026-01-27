@@ -1,7 +1,5 @@
 <?php
-// include_once '../includes/header.inc.php';
-// include_once '../includes/footer.inc.php';
-// include_once '../includes/novbar.inc.php';
+
 $nameError = $usernameError = $passwdError = $confirmpasswordError = '';
 $name = $username = '';
 if (isset($_POST['username'], $_POST['password'], $_POST['confirmpassword'], $_POST['name'])) {
@@ -21,7 +19,7 @@ if (isset($_POST['username'], $_POST['password'], $_POST['confirmpassword'], $_P
     if ($passwd !== $confirmpassword) {
         $confirmpasswordError = "Password not match";
     }
-    if(strlen($passwd) < 6 || strlen($passwd) > 25){
+    if (strlen($passwd) < 6 || strlen($passwd) > 25) {
         $passwdError = "Password must be at least 6 characters";
     }
     if (usernameExist($username)) {
@@ -33,7 +31,7 @@ if (isset($_POST['username'], $_POST['password'], $_POST['confirmpassword'], $_P
             echo '<div class="alert alert-success" role="alert">
     Registeration is successful! You can now <a href="./?page=login" class="alert-link">LOGIN</a>. Give it a click if you like.
 </div>';
-        }else{
+        } else {
             echo '<div class="alert alert-danger" role="alert">
   Please try again!
 </div>';
@@ -45,7 +43,7 @@ if (isset($_POST['username'], $_POST['password'], $_POST['confirmpassword'], $_P
 
 <body>
 
-    
+
     <form method="post" action="./?page=register" class="col-md-8 col-lg-6 mx-auto">
         <h3>Register</h3>
         <div class="mb-3">
