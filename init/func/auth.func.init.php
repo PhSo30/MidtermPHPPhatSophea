@@ -80,7 +80,7 @@ function setUserNewPassword($passwd){
     global $db;
     $user = loggedInUser();
     $query = $db->prepare('UPDATE tbl_users SET passwd = ? WHERE id = ?');
-    $query->bind_param('ds',$passwd,$user->id);
+    $query->bind_param('sd',$passwd,$user->id);
     $query->execute();
     if($db->affected_rows){
         return true;
