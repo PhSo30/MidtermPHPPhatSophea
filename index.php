@@ -7,8 +7,8 @@ include './includes/novbar.inc.php';
 // include_once './pages/'.$_GET['pages'].'.php';
 
 
-$available_pages = ['login', 'register', 'dashboard', 'logout']; //create array
-$logged_in_pages = ['dashboard']; //pages only for logged in users
+$available_pages = ['login', 'register', 'dashboard', 'logout', 'profile']; //create array
+$logged_in_pages = ['dashboard', 'profile']; //pages only for logged in users
 $non_logged_in_pages = ['login', 'register']; //pages only for non-logged in users
 $page = ''; //default page
 if (isset($_GET['page'])) {
