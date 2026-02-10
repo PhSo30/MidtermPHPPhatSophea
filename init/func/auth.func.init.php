@@ -88,6 +88,29 @@ function setUserNewPassword($passwd){
     return false;
 
 }
+function insertImage($file){
+    global $db;
+    $image_name = $file["photo"]["name"];
+    $image_temp = $file["photo"]["tmp_name"];
+
+    $db->begin_transaction();
+
+    $query = $db->prepare("INSERT INTO tbl_users(photo) VALUES(?)");
+    $query ->bind_param('s', $image_name);
+    $query -> execute();
+    if (!$query->affected_rows) {
+        $db->rollback();
+        return false;
+    }
+    if(! move_uploaded_file($image_temp, "./assets/images/" . $image_name)){
+        $db->rollback();
+        return false;
+    }
+    $db->commit();
+    
+    return true;
+}
+
 
 
 ?>
