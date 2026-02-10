@@ -28,6 +28,17 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
         }
     }
 }
+if(isset($_POST['deletePhoto'])) {
+    
+
+
+
+}
+
+if(isset($_POST['uploadPhoto'])) {
+
+}
+
 ?>
 
 
