@@ -45,6 +45,24 @@ if (isset($_POST['deletePhoto'])) {
 }
 
 if (isset($_POST['uploadPhoto'])) {
+    if (!isset($_FILES["photo"]) || !isset($_FILES["photo"]["name"]) || empty($_FILES["photo"]["name"])) {
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';
+        header('Location: ./?page=profile');
+        exit();
+    }
+
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!in_array($_FILES["photo"]["type"], $allowed_types)) {
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Invalid file type. Please upload a JPEG, PNG, or GIF image.</div>';
+        header('Location: ./?page=profile');
+        exit();
+    }
+    if ($_FILES["photo"]["size"] > 5 * 1024 * 1024) {
+
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">File size exceeds the limit of 5MB. Please choose a smaller image.</div>';
+        header('Location: ./?page=profile');
+        exit();
+    }
     if (isset($_FILES["photo"]) && !empty($_FILES["photo"]["name"])) {
         $response = insertImage($_FILES);
         if ($response) {
@@ -75,45 +93,44 @@ if (isset($_POST['uploadPhoto'])) {
     <div class="col-6">
         <form method="post" action="./?page=profile" enctype="multipart/form-data">
             <div class="d-flex justify-content-center">
-                <input name="photo" type="file" id="profileUpload" hidden>
+                <input name="photo" type="file" id="profileUpload" hidden >
                 <label role="button" for="profileUpload">
                     <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="200" height="200">
+                    <hr>
                 </label>
             </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" name="deletePhoto" class="btn btn-danger">Delete</button>
+                <button type="submit" name="uploadPhoto" class="btn btn-success">Upload</button>
+            </div>
+        </form>
     </div>
-    <div class="d-flex justify-content-center">
-        <button type="submit" name="deletePhoto" class="btn btn-danger">Delete</button>
-        <button type="submit" name="uploadPhoto" class="btn btn-success">Upload</button>
-    </div>
-    </form>
-</div>
-<div class="col-6">
-    <form method="post" action="./?page=profile" class="col-md-10 col-lg-6 mx-auto">
-        <h3>Change Password</h3>
-        <div class="mb-3">
-            <label class="form-label">Old Password</label>
-            <input value="<?php echo $oldPasswd ?>" name="oldPasswd" type="password" class="form-control 
+    <div class="col-6">
+        <form method="post" action="./?page=profile" class="col-md-10 col-lg-6 mx-auto">
+            <h3>Change Password</h3>
+            <div class="mb-3">
+                <label class="form-label">Old Password</label>
+                <input value="<?php echo $oldPasswd ?>" name="oldPasswd" type="password" class="form-control 
                 <?php echo empty($oldPasswdErr) ? '' : 'is-invalid' ?>">
-            <div class="invalid-feedback">
-                <?php echo $oldPasswdErr ?>
+                <div class="invalid-feedback">
+                    <?php echo $oldPasswdErr ?>
+                </div>
             </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">New Password</label>
-            <input name="newPasswd" type="password" class="form-control 
+            <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input name="newPasswd" type="password" class="form-control 
                 <?php echo empty($newPasswdErr) ? '' : 'is-invalid' ?>">
-            <div class="invalid-feedback">
-                <?php echo $newPasswdErr ?>
+                <div class="invalid-feedback">
+                    <?php echo $newPasswdErr ?>
+                </div>
             </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Confirm New Password</label>
-            <input name="confirmNewPasswd" type="password" class="form-control">
-        </div>
-        <button type="submit" name="changePasswd" class="btn btn-primary">Submit</button>
-    </form>
-</div>
-
+            <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input name="confirmNewPasswd" type="password" class="form-control">
+            </div>
+            <button type="submit" name="changePasswd" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 </div>
 
 <script>

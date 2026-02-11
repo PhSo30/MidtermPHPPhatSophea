@@ -94,16 +94,13 @@ function setUserNewPassword($passwd)
 function insertImage($file)
 {
     global $db;
-
-    $original_name = $file["photo"]["name"];
-    $image_temp = $file["photo"]["tmp_name"];
-
-    $file_extension = pathinfo($original_name, PATHINFO_EXTENSION);
-    $image_name = $_SESSION['user_id'] . '_' . time() . '.' . $file_extension;
     
-
+    $image_name = $file["photo"]["name"];
+    $image_temp = $file["photo"]["tmp_name"];
+    rename($image_name, uniqid() . '_' . $image_name);
+    $image_name = uniqid() . '_' . $image_name;
     $old_image = getUserImage($_SESSION['user_id']);
-
+    
     $db->begin_transaction();
     
     $query = $db->prepare("UPDATE tbl_users SET photo = ? WHERE id = ?");
