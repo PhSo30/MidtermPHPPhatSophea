@@ -1,7 +1,12 @@
 <?php
 $oldPasswd = $newPasswd = $confirmNewPassword = '';
 $oldPasswdErr = $newPasswdErr = '';
-$response = null;
+
+if (!empty($_SESSION['Profile Message alert'])) {
+    echo $_SESSION['Profile Message alert'];
+    $_SESSION['Profile Message alert'] = '';
+}
+
 
 $photo = empty(getUserImage($_SESSION['user_id'])) ? 'emptyuser.png' : getUserImage($_SESSION['user_id']);
 
@@ -24,6 +29,7 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
     if (empty($oldPasswdErr) && empty($newPasswdErr)) {
         if (setUserNewPassword($newPasswd)) {
             header('Location: ./?page=logout');
+            exit();
         } else {
             echo '<div class="alert alert-danger" role="alert">
                 try again.
@@ -33,20 +39,36 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
 }
 if (isset($_POST['deletePhoto'])) {
     deleteUserImage();
+    $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image deleted successfully!</div>';
     header('Location: ./?page=profile');
+    exit();
 }
 
 if (isset($_POST['uploadPhoto'])) {
     if (isset($_FILES["photo"]) && !empty($_FILES["photo"]["name"])) {
         $response = insertImage($_FILES);
-        header('Location: ./?page=profile');
+        if ($response) {
+            $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image uploaded successfully!</div>';
+            header('Location: ./?page=profile');
+            exit();
+        } else {
+            $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Failed to upload image. Please try again.</div>';
+            header('Location: ./?page=profile');
+            exit();
+        }
     } else {
-        $response = "Please select an image file";
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';
+        header('Location: ./?page=profile');
+        exit();
     }
 }
 
 
+
+
 ?>
+
+
 
 
 <div class="row">
@@ -55,19 +77,8 @@ if (isset($_POST['uploadPhoto'])) {
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
-                    <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="100" height="100">
+                    <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="200" height="200">
                 </label>
-                <?php
-                if(!$response){?>
-                    <div class="invalid-feedback">Upload Image Unsuccess</div>
-                <?php }
-                ?>
-                <?php
-                if($response){?>
-                    <div class="invalid-feedback">Upload Image success</div>
-                <?php }
-                ?>
-                
             </div>
     </div>
     <div class="d-flex justify-content-center">
@@ -104,3 +115,18 @@ if (isset($_POST['uploadPhoto'])) {
 </div>
 
 </div>
+
+<script>
+    const profileUpload = document.getElementById('profileUpload');
+    const profileImg = document.querySelector('label[for="profileUpload"] img');
+    profileUpload.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profileImg.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
