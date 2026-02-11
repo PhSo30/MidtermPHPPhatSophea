@@ -94,15 +94,15 @@ function setUserNewPassword($passwd)
 function insertImage($file)
 {
     global $db;
-    
+
     $image_name = $file["photo"]["name"];
     $image_temp = $file["photo"]["tmp_name"];
     rename($image_name, uniqid() . '_' . $image_name);
     $image_name = uniqid() . '_' . $image_name;
     $old_image = getUserImage($_SESSION['user_id']);
-    
+
     $db->begin_transaction();
-    
+
     $query = $db->prepare("UPDATE tbl_users SET photo = ? WHERE id = ?");
     $query->bind_param('sd', $image_name, $_SESSION['user_id']);
     $query->execute();
@@ -140,12 +140,8 @@ function deleteUserImage()
 {
     global $db;
     $user_id = $_SESSION['user_id'];
-    $query = $db->prepare("SELECT photo FROM tbl_users WHERE id = ?");
-    $query->bind_param('d', $user_id);
-    $query->execute();
-    $result = $query->get_result();
-    if ($result->num_rows) {
-        $photo = $result->fetch_object()->photo;
+    $photo = getUserImage($user_id);
+    if (!empty($photo)) {
         if ($photo) {
             unlink("./assets/images/" . $photo);
         }
@@ -158,7 +154,5 @@ function deleteUserImage()
     }
     return false;
 }
-
-
 
 ?>

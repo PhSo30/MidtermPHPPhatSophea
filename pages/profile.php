@@ -45,12 +45,7 @@ if (isset($_POST['deletePhoto'])) {
 }
 
 if (isset($_POST['uploadPhoto'])) {
-    if (!isset($_FILES["photo"]) || !isset($_FILES["photo"]["name"]) || empty($_FILES["photo"]["name"])) {
-        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';
-        header('Location: ./?page=profile');
-        exit();
-    }
-
+    
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($_FILES["photo"]["type"], $allowed_types)) {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Invalid file type. Please upload a JPEG, PNG, or GIF image.</div>';
@@ -64,8 +59,7 @@ if (isset($_POST['uploadPhoto'])) {
         exit();
     }
     if (isset($_FILES["photo"]) && !empty($_FILES["photo"]["name"])) {
-        $response = insertImage($_FILES);
-        if ($response) {
+        if (insertImage($_FILES)) {
             $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image uploaded successfully!</div>';
             header('Location: ./?page=profile');
             exit();
@@ -93,10 +87,12 @@ if (isset($_POST['uploadPhoto'])) {
     <div class="col-6">
         <form method="post" action="./?page=profile" enctype="multipart/form-data">
             <div class="d-flex justify-content-center">
-                <input name="photo" type="file" id="profileUpload" hidden >
+                <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
                     <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="200" height="200">
+                    <span class="d-block text-center" id="message_save"></span>
                     <hr>
+
                 </label>
             </div>
             <div class="d-flex justify-content-center">
@@ -146,4 +142,5 @@ if (isset($_POST['uploadPhoto'])) {
             reader.readAsDataURL(file);
         }
     });
+
 </script>
