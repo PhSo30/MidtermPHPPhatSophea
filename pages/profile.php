@@ -1,6 +1,9 @@
 <?php
 $oldPasswd = $newPasswd = $confirmNewPassword = '';
 $oldPasswdErr = $newPasswdErr = '';
+$response = null;
+
+$photo = empty(getUserImage($_SESSION['user_id'])) ? 'emptyuser.png' : getUserImage($_SESSION['user_id']);
 
 if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmNewPasswd'])) {
     $oldPasswd = trim($_POST['oldPasswd']);
@@ -29,22 +32,21 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
     }
 }
 if (isset($_POST['deletePhoto'])) {
-
-
-
-
+    deleteUserImage();
+    header('Location: ./?page=profile');
 }
-$response = null;
+
 if (isset($_POST['uploadPhoto'])) {
     if (isset($_FILES["photo"]) && !empty($_FILES["photo"]["name"])) {
         $response = insertImage($_FILES);
+        header('Location: ./?page=profile');
     } else {
         $response = "Please select an image file";
     }
 }
 
-?>
 
+?>
 
 
 <div class="row">
@@ -53,7 +55,7 @@ if (isset($_POST['uploadPhoto'])) {
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
-                    <img src="./assets/images/emptyuser.png" class="rounded">
+                    <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="100" height="100">
                 </label>
                 <?php
                 if(!$response){?>

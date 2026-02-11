@@ -95,8 +95,8 @@ function insertImage($file){
 
     $db->begin_transaction();
 
-    $query = $db->prepare("INSERT INTO tbl_users(photo) VALUES(?)");
-    $query ->bind_param('s', $image_name);
+    $query = $db->prepare("UPDATE tbl_users SET photo = ? WHERE id = ?");
+    $query ->bind_param('sd', $image_name, $_SESSION['user_id']);
     $query -> execute();
     if (!$query->affected_rows) {
         $db->rollback();
@@ -109,6 +109,38 @@ function insertImage($file){
     $db->commit();
     
     return true;
+}
+function getUserImage($user_id){
+    global $db;
+    $query = $db->prepare("SELECT photo FROM tbl_users WHERE id = ?");
+    $query->bind_param('d', $user_id);
+    $query->execute();
+    $result = $query->get_result();
+    if($result->num_rows){
+        return $result->fetch_object()->photo;
+    }
+    return null;
+}
+function deleteUserImage(){
+    global $db;
+    $user_id = $_SESSION['user_id'];
+    $query = $db->prepare("SELECT photo FROM tbl_users WHERE id = ?");
+    $query->bind_param('d', $user_id);
+    $query->execute();
+    $result = $query->get_result();
+    if($result->num_rows){
+        $photo = $result->fetch_object()->photo;
+        if($photo){
+            unlink("./assets/images/".$photo);
+        }
+        $updateQuery = $db->prepare("UPDATE tbl_users SET photo = NULL WHERE id = ?");
+        $updateQuery->bind_param('d', $user_id);
+        $updateQuery->execute();
+        if($updateQuery->affected_rows){
+            return true;
+        }
+    }
+    return false;
 }
 
 
