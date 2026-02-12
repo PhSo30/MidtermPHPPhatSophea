@@ -58,16 +58,25 @@ if (isset($_POST['uploadPhoto'])) {
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($_FILES["photo"]["type"], $allowed_types)) {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Invalid file type. Please upload a JPEG, PNG, or GIF image.</div>';
+        header('Location: ./?page=profile');
+        exit();
+        
     }
     if ($_FILES["photo"]["size"] > 5 * 1024 * 1024) {
 
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">File size exceeds the limit of 5MB. Please choose a smaller image.</div>';
+        header('Location: ./?page=profile');
+        exit();
     }
     if (isset($_FILES["photo"]) && !empty($_FILES["photo"]["name"])) {
         if (insertImage($_FILES)) {
             $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image uploaded successfully!</div>';
+            header('Location: ./?page=profile');
+            exit();
         } else {
             $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Failed to upload image. Please try again.</div>';
+                header('Location: ./?page=profile');
+                exit();
         }
     } else {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';

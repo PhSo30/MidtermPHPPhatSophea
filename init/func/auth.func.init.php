@@ -130,7 +130,7 @@ function deleteUserImage()
     $photo = loggedInUser()->photo;
     if (!empty($photo)) {
         if ($photo) {
-            unlink("./assets/images/" . $photo);
+            unlink(filename: "./assets/images/" . $photo);
         }
         $updateQuery = $db->prepare("UPDATE tbl_users SET photo = NULL WHERE id = ?");
         $updateQuery->bind_param('d', $_SESSION['user_id']);
