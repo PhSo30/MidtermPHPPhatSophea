@@ -55,12 +55,18 @@ if (isset($_POST['deletePhoto'])) {
 
 if (isset($_POST['uploadPhoto'])) {
 
+    if (!isset($_FILES["photo"]) || empty($_FILES["photo"]["name"])) {
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';
+        header('Location: ./?page=profile');
+        exit();
+    }
+
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($_FILES["photo"]["type"], $allowed_types)) {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Invalid file type. Please upload a JPEG, PNG, or GIF image.</div>';
         header('Location: ./?page=profile');
         exit();
-        
+
     }
     if ($_FILES["photo"]["size"] > 5 * 1024 * 1024) {
 
@@ -75,8 +81,8 @@ if (isset($_POST['uploadPhoto'])) {
             exit();
         } else {
             $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Failed to upload image. Please try again.</div>';
-                header('Location: ./?page=profile');
-                exit();
+            header('Location: ./?page=profile');
+            exit();
         }
     } else {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';
