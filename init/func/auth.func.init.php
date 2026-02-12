@@ -99,7 +99,7 @@ function insertImage($file)
     $image_temp = $file["photo"]["tmp_name"];
     rename($new_image_name, uniqid() . '_' . $new_image_name);
     $image_name = uniqid() . '_' . $new_image_name;
-    $old_image = getUserImage($_SESSION['user_id']);
+    $old_image = loggedInUser()->photo;
 
     $db->begin_transaction();
 
@@ -123,32 +123,17 @@ function insertImage($file)
 
     return true;
 }
-function getUserImage($user_id)
+
+function deleteUserImage()
 {
     global $db;
-    $query = $db->prepare("SELECT photo FROM tbl_users WHERE id = ?");
-    $query->bind_param('d', $user_id);
-    $query->execute();
-    $result = $query->get_result();
-    if ($result->num_rows) {
-        return $result->fetch_object()->photo;
-    }
-    return null;
-}
-function deleteUserImage($user_id)
-{
-    global $db;
-    if(isset($user_id)){
-        $photo = getUserImage($user_id);
-    } else {
-        return false;
-    }
+    $photo = loggedInUser()->photo;
     if (!empty($photo)) {
         if ($photo) {
             unlink("./assets/images/" . $photo);
         }
         $updateQuery = $db->prepare("UPDATE tbl_users SET photo = NULL WHERE id = ?");
-        $updateQuery->bind_param('d', $user_id);
+        $updateQuery->bind_param('d', $_SESSION['user_id']);
         $updateQuery->execute();
         if ($updateQuery->affected_rows) {
             return true;

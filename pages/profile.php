@@ -12,7 +12,7 @@ if (!empty($_SESSION['Profile Message alert'])) {
 
 
 
-$photo = empty(getUserImage($_SESSION['user_id'])) ? 'emptyuser.png' : getUserImage($_SESSION['user_id']);
+$photo = empty(loggedInUser() -> photo) ? 'emptyuser.png' : loggedInUser()->photo;
 
 if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmNewPasswd'])) {
     $oldPasswd = trim($_POST['oldPasswd']);
@@ -108,7 +108,7 @@ if (isset($_POST['uploadPhoto'])) {
             <div class="d-flex justify-content-center">
                 <button type="submit" name="deletePhoto" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                 <button type="submit" name="uploadPhoto" class="btn btn-success" 
-                <?php if(!empty(getUserImage($_SESSION['user_id']))) 
+                <?php if(!empty(loggedInUser()->photo))
                     echo 'onclick="return confirm(\'Are you sure? If you upload a new image, the old one will be replaced.\')"' 
                 ?>
                 >Upload</button>
@@ -156,5 +156,4 @@ if (isset($_POST['uploadPhoto'])) {
             reader.readAsDataURL(file);
         }
     });
-
 </script>
