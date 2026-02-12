@@ -152,6 +152,7 @@ if (isset($_POST['uploadPhoto'])) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 profileImg.src = e.target.result;
+                profileImg.style.border = '3px solid red';
             }
             reader.readAsDataURL(file);
         }
