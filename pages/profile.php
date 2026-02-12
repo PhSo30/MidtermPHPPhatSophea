@@ -45,13 +45,11 @@ if (isset($_POST['deletePhoto'])) {
     $message = deleteUserImage();
     if ($message === true) {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image deleted successfully!</div>';
-        header('Location: ./?page=profile');
-        exit();
     } else {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Failed to delete image. Please try again.</div>';
-        header('Location: ./?page=profile');
-        exit();
     }
+    header('Location: ./?page=profile');
+    exit();
 
 }
 
@@ -60,30 +58,22 @@ if (isset($_POST['uploadPhoto'])) {
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($_FILES["photo"]["type"], $allowed_types)) {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Invalid file type. Please upload a JPEG, PNG, or GIF image.</div>';
-        header('Location: ./?page=profile');
-        exit();
     }
     if ($_FILES["photo"]["size"] > 5 * 1024 * 1024) {
 
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">File size exceeds the limit of 5MB. Please choose a smaller image.</div>';
-        header('Location: ./?page=profile');
-        exit();
     }
     if (isset($_FILES["photo"]) && !empty($_FILES["photo"]["name"])) {
         if (insertImage($_FILES)) {
             $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image uploaded successfully!</div>';
-            header('Location: ./?page=profile');
-            exit();
         } else {
             $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Failed to upload image. Please try again.</div>';
-            header('Location: ./?page=profile');
-            exit();
         }
     } else {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">No file selected. Please choose an image to upload.</div>';
-        header('Location: ./?page=profile');
-        exit();
     }
+    header('Location: ./?page=profile');
+    exit();
 }
 
 
@@ -98,7 +88,7 @@ if (isset($_POST['uploadPhoto'])) {
     <div class="col-6">
         <form method="post" action="./?page=profile" enctype="multipart/form-data">
             <div class="d-flex justify-content-center">
-                <input name="photo" type="file" id="profileUpload" hidden>
+                <input name="photo" type="file" id="profileUpload" hidden accept=".jpg, .jpeg, .png, .gif">
                 <label role="button" for="profileUpload">
                     <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="200" height="200">
                     <span class="d-block text-center" id="message_save"></span>
