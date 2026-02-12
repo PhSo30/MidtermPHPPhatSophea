@@ -95,10 +95,10 @@ function insertImage($file)
 {
     global $db;
 
-    $image_name = $file["photo"]["name"];
+    $new_image_name = $file["photo"]["name"];
     $image_temp = $file["photo"]["tmp_name"];
-    rename($image_name, uniqid() . '_' . $image_name);
-    $image_name = uniqid() . '_' . $image_name;
+    rename($new_image_name, uniqid() . '_' . $new_image_name);
+    $image_name = uniqid() . '_' . $new_image_name;
     $old_image = getUserImage($_SESSION['user_id']);
 
     $db->begin_transaction();
@@ -114,9 +114,8 @@ function insertImage($file)
         $db->rollback();
         return false;
     }
-    if ($old_image) {
+    if (!empty($old_image)) {
         unlink("./assets/images/" . $old_image);
-
     }
 
 
@@ -136,11 +135,14 @@ function getUserImage($user_id)
     }
     return null;
 }
-function deleteUserImage()
+function deleteUserImage($user_id)
 {
     global $db;
-    $user_id = $_SESSION['user_id'];
-    $photo = getUserImage($user_id);
+    if(isset($user_id)){
+        $photo = getUserImage($user_id);
+    } else {
+        return false;
+    }
     if (!empty($photo)) {
         if ($photo) {
             unlink("./assets/images/" . $photo);

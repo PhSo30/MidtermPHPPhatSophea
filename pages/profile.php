@@ -2,10 +2,14 @@
 $oldPasswd = $newPasswd = $confirmNewPassword = '';
 $oldPasswdErr = $newPasswdErr = '';
 
+
 if (!empty($_SESSION['Profile Message alert'])) {
     echo $_SESSION['Profile Message alert'];
     $_SESSION['Profile Message alert'] = '';
+}else{
+    echo '<div class="alert alert-info" role="alert">No message to display.</div>';
 }
+
 
 
 $photo = empty(getUserImage($_SESSION['user_id'])) ? 'emptyuser.png' : getUserImage($_SESSION['user_id']);
@@ -38,14 +42,21 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
     }
 }
 if (isset($_POST['deletePhoto'])) {
-    deleteUserImage();
-    $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image deleted successfully!</div>';
-    header('Location: ./?page=profile');
-    exit();
+    $message = deleteUserImage($_SESSION['user_id']);
+    if($message === true){
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-success" role="alert">Image deleted successfully!</div>';
+        header('Location: ./?page=profile');
+        exit();
+    } else {
+        $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Failed to delete image. Please try again.</div>';
+        header('Location: ./?page=profile');
+        exit();
+    }
+
 }
 
 if (isset($_POST['uploadPhoto'])) {
-    
+
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($_FILES["photo"]["type"], $allowed_types)) {
         $_SESSION['Profile Message alert'] = '<div class="alert alert-danger" role="alert">Invalid file type. Please upload a JPEG, PNG, or GIF image.</div>';
@@ -92,12 +103,15 @@ if (isset($_POST['uploadPhoto'])) {
                     <img src="./assets/images/<?php echo $photo ?>" class="rounded" width="200" height="200">
                     <span class="d-block text-center" id="message_save"></span>
                     <hr>
-
                 </label>
             </div>
             <div class="d-flex justify-content-center">
-                <button type="submit" name="deletePhoto" class="btn btn-danger">Delete</button>
-                <button type="submit" name="uploadPhoto" class="btn btn-success">Upload</button>
+                <button type="submit" name="deletePhoto" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                <button type="submit" name="uploadPhoto" class="btn btn-success" 
+                <?php if(!empty(getUserImage($_SESSION['user_id']))) 
+                    echo 'onclick="return confirm(\'Are you sure? If you upload a new image, the old one will be replaced.\')"' 
+                ?>
+                >Upload</button>
             </div>
         </form>
     </div>
